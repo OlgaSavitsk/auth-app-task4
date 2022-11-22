@@ -1,0 +1,68 @@
+{
+  "root": true,
+
+  "parserOptions": {
+    //"parser": "babel-eslint",
+    "ecmaVersion": 2015,
+    "sourceType": "module"
+  },
+
+  "env": {
+    //"browser": true,
+    //"es2022": true,
+    "node": true
+  },
+  "ignorePatterns": ["projects/**/*"],
+  "overrides": [
+    {
+      "files": ["rsc/**/*.ts"],
+      "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@angular-eslint/recommended",
+        "plugin:@angular-eslint/template/process-inline-templates",
+        "airbnb-base",
+        "airbnb-typescript/base",
+        "plugin:import/recommended",
+        "plugin:import/typescript"
+        //"@salesforce/eslint-config-lws/recommended"
+      ],
+      "rules": {
+        "@typescript-eslint/indent": 0,
+        "import/prefer-default-export": 0,
+        "no-return-assign": 0,
+        "no-param-reassign": 0,
+
+        "@angular-eslint/directive-selector": [
+          "error",
+          {
+            "type": "attribute",
+            "prefix": "app",
+            "style": "camelCase"
+          }
+        ],
+        "import/extensions": [
+          "error",
+          "ignorePackages",
+          {
+            "ts": "never",
+            "tsx": "never"
+          }
+        ],
+        "@angular-eslint/component-selector": [
+          "error",
+          {
+            "type": "element",
+            "prefix": "app",
+            "style": "kebab-case"
+          }
+        ]
+      }
+    },
+    {
+      "files": ["*.html"],
+      "extends": ["plugin:@angular-eslint/template/recommended"],
+      "rules": {}
+    }
+  ]
+}
