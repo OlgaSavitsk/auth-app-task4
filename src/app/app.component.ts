@@ -1,11 +1,15 @@
+import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 import { Component, importProvidersFrom } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
-import { provideRouter, RouterModule } from '@angular/router';
-import { routes } from './app-routing.module';
+import { provideRouter, RouterModule, RouterOutlet } from '@angular/router';
+import FooterComponent from '@core/components/footer/footer.component';
+import HeaderComponent from '@core/components/header/header.component';
 
 @Component({
-  standalone: true,
   selector: 'app-root',
+  standalone: true,
+  imports: [CommonModule, HeaderComponent, FooterComponent, RouterModule],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
@@ -14,6 +18,10 @@ export class AppComponent {
 }
 
 //bootstrapApplication(AppComponent, { providers: [provideRouter(routes)] });
-bootstrapApplication(AppComponent, {
-  providers: [importProvidersFrom(RouterModule.forRoot(routes))],
-});
+/* bootstrapApplication(AppComponent, {
+  providers: [
+    importProvidersFrom(RouterModule.forRoot(routes)),
+    importProvidersFrom(HttpClientModule),
+    provideRouter(routes),
+  ],
+}); */

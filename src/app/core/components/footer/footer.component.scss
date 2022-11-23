@@ -1,37 +1,32 @@
 .footer {
+  display: flex;
+  justify-content: space-between;
+  min-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  background-color: #121c1e;
+
+  &__link {
     display: flex;
-    justify-content: space-between;
-    min-width: 1200px;
-    width: 100%;
-    margin: 0 auto;
-    background-color: #121C1E;
+    align-items: center;
+    padding: 10px 0;
+    text-decoration: none;
+    line-height: 45px;
+    color: white;
+  }
 
-    &__link {
-        display: flex;
-        align-items: center;
-        padding: 10px 0;
-        text-decoration: none;
-        line-height: 45px;
-        color: white;
-    }
+  &__img {
+    display: block;
+    margin-right: 10px;
+  }
 
-    &__img {
-        display: block;
-        margin-right: 10px;
-    }
-
-    &__text {
-        font-size: 21px;
-        color: white;
-    }
+  &__text {
+    font-size: 21px;
+    color: white;
+  }
 }
 
 .github {
-    width: 40px;
-    height: 100%;
-}
-
-.school {
-    width: 120px;
-    height: 100%;
+  width: 40px;
+  height: 100%;
 }

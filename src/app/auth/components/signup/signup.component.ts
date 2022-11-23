@@ -1,10 +1,14 @@
+import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
+import { MaterialModule } from '@shared/modules/material/material.module';
 import { Subject, takeUntil } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-signup',
+  standalone: true,
+  imports: [CommonModule, MaterialModule],
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

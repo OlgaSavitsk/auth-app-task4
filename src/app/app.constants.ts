@@ -1,11 +1,13 @@
 export enum Path {
-  homePage = 'home',
   authPage = 'auth',
   signupPage = 'signup',
+  signinPage = 'sigin',
   loginPage = 'login',
 }
 
 export enum StorageKeys {
-  authToken = 'auth-token-rstrello',
-  user = 'user-rstrello',
+  authToken = 'auth-token',
+  user = 'user',
 }
+
+export const defaultUserName = 'Your Name';

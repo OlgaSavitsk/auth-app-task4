@@ -13,15 +13,13 @@ import { LocalStorageService } from '../localstorage.service';
 })
 export class UserApiService {
   get currentUser(): UserInfo | undefined {
-    return this.storageService.loadFromLocalStorage(
-      StorageKeys.user,
-    ) as UserInfo;
+    return this.storageService.loadFromLocalStorage(StorageKeys.user) as UserInfo;
   }
 
   constructor(
     private http: HttpClient,
     private storageService: LocalStorageService,
-    private router: Router,
+    private router: Router
   ) {}
 
   getAllUsers(): Observable<UserInfo[]> {
@@ -39,8 +37,8 @@ export class UserApiService {
   deleteUser(id: string) {
     return this.http.delete(`${environment.BASE_URL}/users/${id}`).pipe(
       tap(() => {
-        this.router.navigate([Path.homePage]);
-      }),
+        this.router.navigate([Path.loginPage]);
+      })
     );
   }
 

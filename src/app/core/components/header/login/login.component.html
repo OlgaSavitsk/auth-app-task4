@@ -1,7 +1,8 @@
 <div class="login">
     <p>{{ username }}</p>
-    <button *ngIf="(authService.isLogged$ | async); else logIn" class="login__button" (click)="logOut()">Log
+    <button *ngIf="(authService.isLoggedIn$$ | async); else logIn" class="login__button" (click)="logOut()">Log
         out</button>
+    <button mat-raised-button color="accent">Accent</button>
 </div>
 
 <ng-template #logIn>

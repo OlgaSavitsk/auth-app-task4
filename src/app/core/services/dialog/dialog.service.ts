@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
+/* import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
-import { ConfirmComponent } from '../../components/confirm/confirm.component';
+import { ConfirmComponent } from '../../components/confirm/confirm.component'; */
 
-@Injectable({
+/* @Injectable({
   providedIn: 'root',
 })
 export class DialogService {
@@ -20,4 +20,4 @@ export class DialogService {
       })
       .afterClosed();
   }
-}
+} */

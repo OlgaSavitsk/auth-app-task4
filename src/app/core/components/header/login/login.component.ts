@@ -1,11 +1,14 @@
+import { CommonModule } from '@angular/common';
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '@auth/services/auth.service';
 
-import AuthService from '@auth/services/auth.service';
-import { defaultUserName, Path } from 'src/app/app.constants';
+import { /* defaultUserName */ Path } from 'src/app/app.constants';
 
 @Component({
   selector: 'app-login',
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -18,6 +21,7 @@ export default class LoginComponent {
   logOut(): void {
     this.router.navigate([Path.loginPage]);
     this.authService.logout();
-    this.username = defaultUserName;
+    this.username = '';
+    //this.username = defaultUserName;
   }
 }
