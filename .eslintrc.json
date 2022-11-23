@@ -15,7 +15,7 @@
   "ignorePatterns": ["projects/**/*"],
   "overrides": [
     {
-      "files": ["rsc/**/*.ts"],
+      "files": ["src/**/*.ts"],
       "extends": [
         "eslint:recommended",
         "plugin:@typescript-eslint/recommended",
@@ -64,5 +64,17 @@
       "extends": ["plugin:@angular-eslint/template/recommended"],
       "rules": {}
     }
-  ]
+  ],
+  "parser": "@typescript-eslint/parser",
+  "settings": {
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx"]
+    },
+    "import/resolver": {
+      "typescript": {},
+      "node": {
+        "extensions": [".ts", ".tsx"]
+      }
+    }
+  }
 }

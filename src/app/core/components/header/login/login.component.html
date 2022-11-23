@@ -1,0 +1,9 @@
+<div class="login">
+    <p>{{ username }}</p>
+    <button *ngIf="(authService.isLogged$ | async); else logIn" class="login__button" (click)="logOut()">Log
+        out</button>
+</div>
+
+<ng-template #logIn>
+    <button class="login__button">Log in</button>
+</ng-template>
