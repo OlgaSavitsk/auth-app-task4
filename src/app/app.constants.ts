@@ -1,7 +1,7 @@
 export enum Path {
   authPage = 'auth',
   signupPage = 'signup',
-  signinPage = 'sigin',
+  signinPage = 'signin',
   loginPage = 'login',
 }
 

@@ -1,8 +1,8 @@
 <div class="container">
     <div class="register-modal">
-        <div class="close">
+        <!-- <div class="close">
             <div class="close-icon" routerLink='/home'></div>
-        </div>
+        </div> -->
         <form class="example-form form" [formGroup]="formGroup" (ngSubmit)="onSubmit()">
             <h2>LOGIN</h2>
             <div class="form__container">
@@ -19,8 +19,8 @@
                         formControlName="password" autocomplete="off">
                 </mat-form-field>
             </div>
-            <button mat-flat-button class="form__button" [disabled]="formGroup.invalid">{{'HEADER.LOGIN'}}</button>
-            <button mat-flat-button class="form__button login-btn">{{'AUTH.ROUT_REGISTR'}}</button>
+            <button mat-button class="form__button" [disabled]="formGroup.invalid">LOGIN</button>
+            <button mat-button class="form__button login-btn" routerLink='/signup'>Register an account</button>
         </form>
     </div>
 </div>

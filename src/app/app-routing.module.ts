@@ -5,11 +5,11 @@ import { Path } from './app.constants';
 import { PageNotFoundComponent } from './core/pages/page-not-found/page-not-found.component';
 
 export const appRoutes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '', redirectTo: Path.signupPage, pathMatch: 'full' },
   {
-    path: 'login',
-    component: AuthPageComponent,
-    //loadChildren: () => import('./auth/auth-routing.module').then((m) => m.authroutes),
+    path: '',
+    //component: AuthPageComponent,
+    loadChildren: () => import('./auth/auth-routing.module').then((m) => m.authroutes),
   },
   // {
   /*  path: Path.adminPage,

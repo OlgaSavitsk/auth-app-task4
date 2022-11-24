@@ -3,6 +3,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { Component, importProvidersFrom } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { provideRouter, RouterModule, RouterOutlet } from '@angular/router';
+import { AuthPageComponent } from '@auth/pages/auth-page.component';
 import FooterComponent from '@core/components/footer/footer.component';
 import HeaderComponent from '@core/components/header/header.component';
 

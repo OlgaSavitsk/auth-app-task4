@@ -5,16 +5,17 @@ import { Subject, takeUntil } from 'rxjs';
 import { AuthService } from '@auth/services/auth.service';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '@shared/modules/material/material.module';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-signin',
   standalone: true,
-  imports: [CommonModule, MaterialModule],
+  imports: [CommonModule, MaterialModule, RouterModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SiginComponent implements OnInit, OnDestroy {
+export class SigninComponent implements OnInit, OnDestroy {
   formGroup!: FormGroup;
 
   private ngUnsubscribe = new Subject();
