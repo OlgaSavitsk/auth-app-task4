@@ -8,19 +8,12 @@ export const appRoutes: Routes = [
   { path: '', redirectTo: Path.signupPage, pathMatch: 'full' },
   {
     path: '',
-    //component: AuthPageComponent,
     loadChildren: () => import('./auth/auth-routing.module').then((m) => m.authroutes),
   },
-  // {
-  /*  path: Path.adminPage,
-    loadChildren: () => import('./admin/admin.module').then((m) => m.AdminModule),
-    canLoad: [AuthGuard], */
-  //},
+  {
+    path: Path.adminPage,
+    loadComponent: () => import('./admin/admin.component').then((m) => m.AdminComponent),
+    //canLoad: [AuthGuard],
+  },
   { path: '**', component: PageNotFoundComponent },
 ];
-
-/* @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
-})
-export class AppRoutingModule {} */

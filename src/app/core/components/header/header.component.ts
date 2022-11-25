@@ -10,7 +10,6 @@ import LoginComponent from './login/login.component';
   imports: [CommonModule, LoginComponent, MaterialModule],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class HeaderComponent {
   username: string | undefined = defaultUserName;

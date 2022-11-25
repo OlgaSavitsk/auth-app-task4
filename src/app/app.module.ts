@@ -13,17 +13,7 @@ import { TOKEN_INTERCEPTOR_PROVIDERS } from './core/interceptors/providers';
 
 @NgModule({
   declarations: [],
-  imports: [
-    //CommonModule,
-    BrowserModule,
-    BrowserAnimationsModule,
-    AppComponent,
-    //AppRoutingModule,
-    // HttpClientModule,
-    //CoreModule,
-    //SharedModule,
-    //RouterModule.forChild(routes),
-  ],
+  imports: [BrowserModule, BrowserAnimationsModule, AppComponent],
   //providers: [TOKEN_INTERCEPTOR_PROVIDERS],
   bootstrap: [],
 })

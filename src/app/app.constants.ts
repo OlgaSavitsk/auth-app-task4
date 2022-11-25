@@ -1,13 +1,16 @@
 export enum Path {
-  authPage = 'auth',
   signupPage = 'signup',
-  signinPage = 'signin',
+  adminPage = 'admin',
   loginPage = 'login',
 }
 
 export enum StorageKeys {
   authToken = 'auth-token',
-  user = 'user',
+}
+
+export enum BlockStatus {
+  blocked = 'blocked',
+  active = 'active',
 }
 
 export const defaultUserName = 'Your Name';

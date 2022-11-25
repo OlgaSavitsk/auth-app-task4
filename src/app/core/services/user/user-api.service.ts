@@ -12,10 +12,6 @@ import { LocalStorageService } from '../localstorage.service';
   providedIn: 'root',
 })
 export class UserApiService {
-  get currentUser(): UserInfo | undefined {
-    return this.storageService.loadFromLocalStorage(StorageKeys.user) as UserInfo;
-  }
-
   constructor(
     private http: HttpClient,
     private storageService: LocalStorageService,
@@ -23,26 +19,22 @@ export class UserApiService {
   ) {}
 
   getAllUsers(): Observable<UserInfo[]> {
-    return this.http.get<UserInfo[]>(`${environment.BASE_URL}/users`);
+    return this.http.get<UserInfo[]>(`${environment.BASE_URL}/user`);
   }
 
   getUserById(id: string): Observable<UserInfo> {
-    return this.http.get<UserInfo>(`${environment.BASE_URL}/users/${id}`);
+    return this.http.get<UserInfo>(`${environment.BASE_URL}/user/${id}`);
   }
 
   updateUser(id: string, user: UserAuth): Observable<UserInfo> {
-    return this.http.put<UserInfo>(`${environment.BASE_URL}/users/${id}`, user);
+    return this.http.put<UserInfo>(`${environment.BASE_URL}/user/${id}`, user);
   }
 
   deleteUser(id: string) {
-    return this.http.delete(`${environment.BASE_URL}/users/${id}`).pipe(
+    return this.http.delete(`${environment.BASE_URL}/user/${id}`); /* .pipe(
       tap(() => {
         this.router.navigate([Path.loginPage]);
       })
-    );
-  }
-
-  logout(): void {
-    this.storageService.removeStorage(StorageKeys.user);
+    ); */
   }
 }

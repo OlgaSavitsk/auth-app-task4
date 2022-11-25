@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, of, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, Observable, of, switchMap, take, tap } from 'rxjs';
 
 import { Path, StorageKeys } from 'src/app/app.constants';
 import { LocalStorageService } from '@core/services/localstorage.service';
@@ -30,28 +30,30 @@ export class AuthService {
     this.isLoggedIn$.next(!!this.token);
   }
 
-  signUp(user: UserAuth): Observable<UserInfo> {
-    return this.http.post<UserInfo>(`${environment.BASE_URL}/signup`, user).pipe(
+  signUp(user: UserInfo): Observable<UserInfo> {
+    return this.http.post<UserInfo>(`${environment.BASE_URL}/auth/signup`, user).pipe(
       tap(() => {
         this.router.navigate([Path.loginPage]);
       })
     );
   }
 
-  login({ login, password }: UserAuth) {
+  login({ login, password }: UserAuth): Observable<UserInfo[] | undefined> {
     return this.http
-      .post<{ token: string }>(`${environment.BASE_URL}/signin`, { login, password })
+      .post<{ access_token: string }>(`${environment.BASE_URL}/auth/signin`, {
+        login,
+        password,
+      })
       .pipe(
-        switchMap(({ token }) => {
+        switchMap(({ access_token }) => {
           this.isLoggedIn$.next(true);
-          this.setStorage(token);
-          //this.router.navigate([Path.boardsPage]);
-          return this.getUsers(token);
+          this.setStorage(access_token);
+          this.router.navigate([Path.adminPage]);
+          return this.getUsers();
         }),
         tap((users: UserInfo[] | undefined) => {
           if (users) {
             this.currentUser = users.find((user: { login: string }) => user.login === login)!;
-            this.storageService.setStorageData(this.currentUser, StorageKeys.user);
           }
         })
       );
@@ -61,15 +63,31 @@ export class AuthService {
     this.storageService.setStorageData(token, StorageKeys.authToken);
   }
 
-  getUsers(token: string): Observable<UserInfo[] | undefined> {
-    if (!token) {
+  private users$$ = new BehaviorSubject<UserInfo[]>([]);
+  public users$ = this.users$$.pipe();
+
+  initData(): void {
+    this.users$ = this.getUsers().pipe(
+      take(1),
+      tap((items: UserInfo[]) => {
+        this.users$$.next(items);
+      })
+    );
+  }
+
+  getUsers(): Observable<UserInfo[]> {
+    /*  if (!token) {
       return of(undefined);
-    }
-    return this.http.get<UserInfo[]>(`${environment.BASE_URL}/users`);
+    } */
+    return this.http.get<UserInfo[]>(`${environment.BASE_URL}/user`);
   }
 
   logout(): void {
     this.storageService.removeStorage(StorageKeys.authToken);
     this.isLoggedIn$.next(false);
+  }
+
+  updateUserStatus(status: UserInfo['status'], id: string) {
+    return this.http.put<UserInfo>(`${environment.BASE_URL}/user/${id}`, { status });
   }
 }

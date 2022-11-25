@@ -27,3 +27,32 @@ body {
 .mdc-text-field:not(.mdc-text-field--disabled) .mdc-floating-label {
   color: #333;
 }
+
+.mat-toolbar.mat-primary {
+  background-color: #663bb8;
+}
+
+@media (max-width: 370px) {
+  .mdc-data-table__table {
+    max-width: 300px !important;
+    width: 100% !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .mdc-data-table__cell,
+  .mdc-data-table__header-cell {
+    font-size: 10px;
+    line-height: 12px;
+  }
+
+  .mdc-data-table__table {
+    max-width: 400px;
+    width: 100%;
+  }
+
+  .mdc-data-table__cell,
+  .mdc-data-table__header-cell {
+    padding: 0 5px !important;
+  }
+}
