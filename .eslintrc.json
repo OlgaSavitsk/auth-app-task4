@@ -2,14 +2,11 @@
   "root": true,
 
   "parserOptions": {
-    //"parser": "babel-eslint",
     "ecmaVersion": 2015,
     "sourceType": "module"
   },
 
   "env": {
-    //"browser": true,
-    //"es2022": true,
     "node": true
   },
   "ignorePatterns": ["projects/**/*"],
@@ -25,7 +22,6 @@
         "airbnb-typescript/base",
         "plugin:import/recommended",
         "plugin:import/typescript"
-        //"@salesforce/eslint-config-lws/recommended"
       ],
       "rules": {
         "@typescript-eslint/indent": 0,

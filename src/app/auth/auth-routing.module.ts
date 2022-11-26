@@ -1,6 +1,4 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { config } from 'rxjs';
+import { Routes } from '@angular/router';
 
 import { Path } from '../app.constants';
 import { SigninComponent } from './components/login/login.component';

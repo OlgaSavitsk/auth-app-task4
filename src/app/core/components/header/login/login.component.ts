@@ -1,16 +1,16 @@
-import { CommonModule } from '@angular/common';
-import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
-import { Router } from '@angular/router';
-import { AuthService } from '@auth/services/auth.service';
-import { MaterialModule } from '@shared/modules/material/material.module';
-import { UserControlService } from 'src/app/admin/services/user-control.service';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
+import { Component, Input } from '@angular/core';
 
-import { /* defaultUserName */ BlockStatus, Path } from 'src/app/app.constants';
+import { AuthService } from '@auth/services/auth.service';
+import { UserControlService } from '@core/services/user-control.service';
+import { MaterialModule } from '@shared/modules/material/material.module';
+
+import { BlockStatus } from 'src/app/app.constants';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, MaterialModule],
+  imports: [CommonModule, MaterialModule, NgOptimizedImage],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
@@ -19,28 +19,17 @@ export default class LoginComponent {
 
   isDeleted: boolean = false;
 
-  constructor(
-    public authService: AuthService,
-    private router: Router,
-    private userControlService: UserControlService
-  ) {}
+  constructor(public authService: AuthService, private userControlService: UserControlService) {}
 
-  onBlock() {
+  onBlock(): void {
     this.userControlService.blockUser(BlockStatus.blocked);
   }
 
-  onUnBlock() {
+  onUnBlock(): void {
     this.userControlService.blockUser(BlockStatus.active);
   }
 
-  onDelete() {
-    this.userControlService.deleteUser(!this.isDeleted);
-  }
-
-  logOut(): void {
-    this.router.navigate([Path.loginPage]);
-    this.authService.logout();
-    this.username = '';
-    //this.username = defaultUserName;
+  onDelete(val: boolean): void {
+    this.userControlService.deleteUser(val);
   }
 }

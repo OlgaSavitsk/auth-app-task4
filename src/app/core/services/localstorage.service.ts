@@ -1,6 +1,10 @@
 import { isPlatformBrowser } from '@angular/common';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
-import { UserInfo } from 'src/app/shared/models/user.interfaces';
+
+export interface StorageUser {
+  token: string;
+  name: string;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -8,7 +12,7 @@ import { UserInfo } from 'src/app/shared/models/user.interfaces';
 export class LocalStorageService {
   private usedLocalStorage: Storage | undefined;
 
-  currentData: string | UserInfo | undefined;
+  currentData: string | StorageUser | undefined;
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object) {
     this.usedLocalStorage = this.getWindowRef();
@@ -29,24 +33,24 @@ export class LocalStorageService {
     return null;
   }
 
-  loadFromLocalStorage<T extends string | UserInfo>(storageName: string): string | UserInfo {
+  loadFromLocalStorage(storageName: string) {
     const storageData = this.getStorageItem(storageName);
     const checkStorageData = (data: string | null | undefined) => data;
     if (!checkStorageData(storageData)) {
       this.currentData = '';
     } else {
-      const data: T = JSON.parse(storageData!);
+      const data: StorageUser = JSON.parse(storageData!);
       this.currentData = data;
     }
     return this.currentData;
   }
 
-  getStorageData(): string | UserInfo | undefined {
+  getStorageData(): string | StorageUser | undefined {
     return this.currentData;
   }
 
-  setStorageData<T extends string | UserInfo>(data: T, storageName: string): void {
-    this.currentData = data;
+  setStorageData({ token, name }: StorageUser, storageName: string): void {
+    this.currentData = { token, name };
     this.saveToStorage(storageName);
   }
 

@@ -28,15 +28,12 @@ body {
   color: #333;
 }
 
-.mat-toolbar.mat-primary {
-  background-color: #663bb8;
+.mdc-text-field:not(.mdc-text-field--disabled) .mdc-text-field__input {
+  color: #333;
 }
 
-@media (max-width: 370px) {
-  .mdc-data-table__table {
-    max-width: 300px !important;
-    width: 100% !important;
-  }
+.mat-toolbar.mat-primary {
+  background-color: #663bb8;
 }
 
 @media (max-width: 768px) {
@@ -54,5 +51,12 @@ body {
   .mdc-data-table__cell,
   .mdc-data-table__header-cell {
     padding: 0 5px !important;
+  }
+}
+
+@media (max-width: 370px) {
+  .mdc-data-table__table {
+    max-width: 300px !important;
+    width: 100% !important;
   }
 }

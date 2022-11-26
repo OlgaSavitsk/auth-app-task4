@@ -1,9 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
-import { RouterLink, RouterModule } from '@angular/router';
-import { MaterialModule } from '@shared/modules/material/material.module';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
+
+import { ValidationService } from '@core/services/validation.service';
+import { MaterialModule } from '@shared/modules/material/material.module';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -12,20 +14,22 @@ import { AuthService } from '../../services/auth.service';
   imports: [CommonModule, MaterialModule, RouterModule],
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SignupComponent implements OnInit, OnDestroy {
   formGroup!: FormGroup;
 
   private ngUnsubscribe = new Subject();
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, public validationService: ValidationService) {}
 
   ngOnInit(): void {
     this.formGroup = new FormGroup({
       name: new FormControl('', [Validators.required, Validators.minLength(1)]),
       login: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required, Validators.minLength(1)]),
+    });
+    this.formGroup.valueChanges.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
+      this.validationService.setValidationErrors(this.formGroup);
     });
   }
 

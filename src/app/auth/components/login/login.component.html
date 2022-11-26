@@ -5,22 +5,27 @@
         </div> -->
         <form class="example-form form" [formGroup]="formGroup" (ngSubmit)="onSubmit()">
             <h2>LOGIN</h2>
+            <mat-error>{{errorMessage$$ | async}}</mat-error>
             <div class="form__container">
 
                 <mat-form-field class="example-full-width" appearance="fill">
                     <mat-label>Email</mat-label>
                     <input matInput class="form__input" type="email" placeholder="Enter your email"
-                        formControlName="login" autocomplete="off">
+                        formControlName='login' autocomplete="new-email">
+                    <mat-error *ngIf=" formGroup.get('login')!.invalid">{{validationService.errorMessage}}</mat-error>
                 </mat-form-field>
 
                 <mat-form-field class="example-full-width" appearance="fill">
                     <mat-label>Password</mat-label>
                     <input matInput class="form__input" type="password" placeholder="Enter password"
-                        formControlName="password" autocomplete="off">
+                        formControlName="password">
+                    <mat-error *ngIf=" formGroup.get('password')!.invalid">{{validationService.errorMessage}}
+                    </mat-error>
                 </mat-form-field>
             </div>
-            <button mat-button class="form__button" [disabled]="formGroup.invalid">LOGIN</button>
-            <button mat-button class="form__button login-btn" routerLink='/signup'>Register an account</button>
+            <button mat-button class=" form__button" [disabled]="formGroup.invalid">LOGIN</button>
+            <button mat-button class="form__button login-btn" routerLink='/signup'>Register an
+                account</button>
         </form>
     </div>
 </div>

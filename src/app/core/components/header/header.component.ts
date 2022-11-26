@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
+
 import { MaterialModule } from '@shared/modules/material/material.module';
-import { defaultUserName } from 'src/app/app.constants';
 import LoginComponent from './login/login.component';
 
 @Component({
@@ -12,7 +12,5 @@ import LoginComponent from './login/login.component';
   styleUrls: ['./header.component.scss'],
 })
 export default class HeaderComponent {
-  username: string | undefined = defaultUserName;
-
   constructor() {}
 }

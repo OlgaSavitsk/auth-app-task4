@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, of, switchMap, take, tap } from 'rxjs';
+import { BehaviorSubject, Observable, switchMap, take, tap } from 'rxjs';
 
-import { Path, StorageKeys } from 'src/app/app.constants';
-import { LocalStorageService } from '@core/services/localstorage.service';
+import { Path, STORAGE_NAME } from 'src/app/app.constants';
+import { LocalStorageService, StorageUser } from '@core/services/localstorage.service';
 import { UserAuth, UserInfo } from '@shared/models/user.interfaces';
 import { environment } from 'src/environments/environment';
 
@@ -13,13 +13,19 @@ import { environment } from 'src/environments/environment';
 })
 export class AuthService {
   private isLoggedIn$ = new BehaviorSubject<boolean>(false);
-
   isLoggedIn$$ = this.isLoggedIn$.pipe();
 
-  currentUser!: UserInfo;
+  private currentUserName$ = new BehaviorSubject<string>('Your name');
+  currentUserName$$ = this.currentUserName$.pipe();
 
-  get token(): string | undefined {
-    return this.storageService.loadFromLocalStorage(StorageKeys.authToken) as string;
+  accessToken!: string;
+
+  set accestoken(val: string) {
+    this.accessToken = val;
+  }
+
+  get accestoken() {
+    return this.accessToken;
   }
 
   constructor(
@@ -27,7 +33,7 @@ export class AuthService {
     private storageService: LocalStorageService,
     private router: Router
   ) {
-    this.isLoggedIn$.next(!!this.token);
+    this.getToken();
   }
 
   signUp(user: UserInfo): Observable<UserInfo> {
@@ -47,47 +53,42 @@ export class AuthService {
       .pipe(
         switchMap(({ access_token }) => {
           this.isLoggedIn$.next(true);
-          this.setStorage(access_token);
-          this.router.navigate([Path.adminPage]);
+          this.accestoken = access_token;
           return this.getUsers();
         }),
-        tap((users: UserInfo[] | undefined) => {
+        tap(async (users: UserInfo[] | undefined) => {
           if (users) {
-            this.currentUser = users.find((user: { login: string }) => user.login === login)!;
+            const { name } = users.find((user: { login: string }) => user.login === login)!;
+            //this.currentUserName$.next(name);
+            this.setStorage(this.accestoken, name);
+            this.router.navigate([Path.adminPage]);
           }
         })
       );
   }
 
-  setStorage(token: string): void {
-    this.storageService.setStorageData(token, StorageKeys.authToken);
+  async getToken() {
+    const { token, name } = (await this.storageService.loadFromLocalStorage(
+      STORAGE_NAME
+    )) as StorageUser;
+    this.isLoggedIn$.next(!!token);
+    name ? name : 'Your name';
+    this.currentUserName$.next(name);
+    this.accestoken = token;
+    //return token;
   }
 
-  private users$$ = new BehaviorSubject<UserInfo[]>([]);
-  public users$ = this.users$$.pipe();
-
-  initData(): void {
-    this.users$ = this.getUsers().pipe(
-      take(1),
-      tap((items: UserInfo[]) => {
-        this.users$$.next(items);
-      })
-    );
+  setStorage(token: string, name: string): void {
+    this.storageService.setStorageData({ token, name }, STORAGE_NAME);
   }
 
   getUsers(): Observable<UserInfo[]> {
-    /*  if (!token) {
-      return of(undefined);
-    } */
     return this.http.get<UserInfo[]>(`${environment.BASE_URL}/user`);
   }
 
   logout(): void {
-    this.storageService.removeStorage(StorageKeys.authToken);
-    this.isLoggedIn$.next(false);
-  }
-
-  updateUserStatus(status: UserInfo['status'], id: string) {
-    return this.http.put<UserInfo>(`${environment.BASE_URL}/user/${id}`, { status });
+    this.storageService.removeStorage(STORAGE_NAME);
+    this.getToken();
+    this.router.navigate([Path.signupPage]);
   }
 }

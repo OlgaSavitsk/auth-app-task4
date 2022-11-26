@@ -1,9 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
-import { Component, importProvidersFrom } from '@angular/core';
-import { bootstrapApplication } from '@angular/platform-browser';
-import { provideRouter, RouterModule, RouterOutlet } from '@angular/router';
-import { AuthPageComponent } from '@auth/pages/auth-page.component';
+import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
+
 import FooterComponent from '@core/components/footer/footer.component';
 import HeaderComponent from '@core/components/header/header.component';
 
@@ -17,12 +15,3 @@ import HeaderComponent from '@core/components/header/header.component';
 export class AppComponent {
   title = 'app';
 }
-
-//bootstrapApplication(AppComponent, { providers: [provideRouter(routes)] });
-/* bootstrapApplication(AppComponent, {
-  providers: [
-    importProvidersFrom(RouterModule.forRoot(routes)),
-    importProvidersFrom(HttpClientModule),
-    provideRouter(routes),
-  ],
-}); */

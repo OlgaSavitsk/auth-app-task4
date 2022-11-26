@@ -12,6 +12,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
   declarations: [],
@@ -30,6 +31,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatTableModule,
     MatCheckboxModule,
     MatNativeDateModule,
+    MatAutocompleteModule,
   ],
 })
 export class MaterialModule {}

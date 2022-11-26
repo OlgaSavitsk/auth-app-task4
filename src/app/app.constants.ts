@@ -4,9 +4,7 @@ export enum Path {
   loginPage = 'login',
 }
 
-export enum StorageKeys {
-  authToken = 'auth-token',
-}
+export const STORAGE_NAME = 'userDate';
 
 export enum BlockStatus {
   blocked = 'blocked',
@@ -14,3 +12,13 @@ export enum BlockStatus {
 }
 
 export const defaultUserName = 'Your Name';
+
+export const displayedColumns: string[] = [
+  'check',
+  'position',
+  'name',
+  'email',
+  'registration',
+  'login',
+  'status',
+];

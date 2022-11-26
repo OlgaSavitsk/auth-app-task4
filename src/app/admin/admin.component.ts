@@ -1,13 +1,14 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormGroup } from '@angular/forms';
+
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { AuthService } from '@auth/services/auth.service';
-import { HttpErrorResponse } from '@angular/common/http';
-import { UserDetails, UserInfo } from '@shared/models/user.interfaces';
-import { FormBuilder, FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
-import { UserControlService } from './services/user-control.service';
-import { take } from 'rxjs';
-import { UserApiService } from '@core/services/user/user-api.service';
+import { UserInfo } from '@shared/models/user.interfaces';
+import { UserControlService } from '../core/services/user-control.service';
+import { UserApiService } from '@core/services/user-api.service';
+import { SelectControlService } from './services/select-control.service';
+import { displayedColumns } from '../app.constants';
 
 export interface Task {
   name: string;
@@ -24,86 +25,72 @@ export interface Task {
   styleUrls: ['./admin.component.scss'],
 })
 export class AdminComponent implements OnInit {
-  formGroup!: FormGroup;
-  blockInit!: boolean;
-  displayedColumns: string[] = [
-    'check',
-    'position',
-    'name',
-    'email',
-    'registration',
-    'login',
-    'status',
-  ];
-  userDetails: UserDetails = {
-    users: [],
-    completed: false,
-  };
-
-  allComplete: boolean = false;
-  checkedUsers: UserInfo[] = [];
+  displayedColumns = displayedColumns;
+  userState: UserInfo[] = [];
 
   constructor(
-    private authService: AuthService,
+    public authService: AuthService,
     private userControlService: UserControlService,
-    private userService: UserApiService
+    private userService: UserApiService,
+    public selectControlService: SelectControlService
   ) {
     this.getAllUsers();
   }
 
-  ngOnInit() {
-    this.authService.initData();
+  ngOnInit(): void {
     this.getAllUsers();
+    this.authService.getToken();
+    this.blockUser();
+    this.deleteUser();
+  }
+
+  blockUser() {
     this.userControlService.blockStatus$.subscribe((val) => {
-      if (val) {
-        this.checkedUsers.forEach((user) => {
+      val &&
+        this.selectControlService.checkedUsers.forEach((user) => {
           if (user.status == val) return;
           if (user.completed) {
             user.status = val;
-
-            this.authService.updateUserStatus(val, user.id).subscribe();
+            this.userService.updateUserStatus(val, user.id).subscribe();
+            this.logout();
           }
         });
-      }
     });
-    this.userControlService.isDeleted$.subscribe((val) => {
-      if (val) {
-        this.checkedUsers.forEach((user) => {
+  }
+
+  logout(): void {
+    this.selectControlService.checkedUsers.forEach((user) => {
+      this.authService.currentUserName$$.subscribe((name) => {
+        if (user.name === name) {
+          this.authService.logout();
+        }
+        return;
+      });
+    });
+  }
+
+  deleteUser(): void {
+    this.userControlService.isDeleted$.subscribe((val: boolean) => {
+      val &&
+        this.selectControlService.checkedUsers.forEach(async (user) => {
+          console.log(user.id);
           this.userService.deleteUser(user.id).subscribe();
-          this.getAllUsers();
+          this.userControlService.deleteUser(false);
+          this.setUserState(user.id);
+          this.logout();
         });
-      }
     });
   }
 
-  public getAllUsers() {
-    this.authService.users$.subscribe((resp: UserInfo[]) => {
-      this.userDetails.users = resp;
-      this.userDetails.users.forEach((user) => (user.completed = false));
+  setUserState(id: string) {
+    this.userState = this.selectControlService.userDetails.users.filter((user) => user.id !== id);
+    this.selectControlService.userDetails.users = this.userState;
+  }
+
+  public async getAllUsers(): Promise<void> {
+    await this.authService.getUsers().subscribe((users: UserInfo[]) => {
+      this.selectControlService.userDetails.users = users;
+      this.selectControlService.userDetails.users.forEach((user) => (user.completed = false));
     });
   }
-
-  updateAllComplete() {
-    this.allComplete =
-      this.userDetails.users != null && this.userDetails.users.every((t) => t.completed);
-  }
-
-  someComplete(): boolean {
-    if (this.userDetails.users == null) {
-      return false;
-    }
-    this.checkedUsers = this.userDetails.users.filter((t) => t.completed);
-    console.log(this.checkedUsers);
-    return this.checkedUsers.length > 0 && !this.allComplete;
-  }
-
-  setAll(completed: boolean) {
-    this.allComplete = completed;
-    if (this.userDetails.users == null) {
-      return;
-    }
-    this.userDetails.users.forEach((user) => (user.completed = completed));
-  }
-
-  userBlock() {}
 }
