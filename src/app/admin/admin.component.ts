@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormGroup } from '@angular/forms';
 
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { AuthService } from '@auth/services/auth.service';
@@ -34,7 +33,7 @@ export class AdminComponent implements OnInit {
     private userService: UserApiService,
     public selectControlService: SelectControlService
   ) {
-    this.getAllUsers();
+    //this.getAllUsers();
   }
 
   ngOnInit(): void {
@@ -73,12 +72,11 @@ export class AdminComponent implements OnInit {
     this.userControlService.isDeleted$.subscribe((val: boolean) => {
       val &&
         this.selectControlService.checkedUsers.forEach(async (user) => {
-          console.log(user.id);
           this.userService.deleteUser(user.id).subscribe();
           this.userControlService.deleteUser(false);
           this.setUserState(user.id);
-          this.logout();
         });
+      this.logout();
     });
   }
 
