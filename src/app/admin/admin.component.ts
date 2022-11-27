@@ -44,32 +44,35 @@ export class AdminComponent implements OnInit {
 
   blockUser() {
     this.userControlService.blockStatus$.subscribe((val) => {
-      val &&
-        this.selectControlService.checkedUsers.forEach((user) => {
-          if (user.status == val) return;
-          if (user.completed) {
-            user.status = val;
-            this.userService.updateUserStatus(val, user.id).subscribe();
-            this.logout();
-          }
-        });
+      this.selectControlService.checkedUsers.forEach((user) => {
+        if (user.status == val) return;
+        if (user.completed) {
+          user.status = val;
+          this.userService.updateUserStatus(val, user.id).subscribe();
+          this.logout();
+        }
+      });
     });
   }
 
   deleteUser(): void {
     this.userControlService.isDeleted$.subscribe((val: boolean) => {
-      val &&
+      if (val) {
         this.selectControlService.checkedUsers.every(async (user) => {
           this.userService.deleteUser(user.id).subscribe();
           this.setUserState(user.id);
           this.userControlService.deleteUser(false);
           this.logout();
         });
+      }
     });
   }
 
   logout(): void {
-    if (this.currentName === this.selectControlService.currentUser) {
+    if (
+      this.selectControlService.completedUser &&
+      this.currentName === this.selectControlService.currentUser
+    ) {
       this.authService.logout();
     }
     return;
