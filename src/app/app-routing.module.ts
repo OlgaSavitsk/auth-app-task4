@@ -19,7 +19,9 @@ export const appRoutes: Routes = [
         const router = inject(Router);
         return inject(AuthService)
           .getToken()
-          .then((isLogged) => !!isLogged || router.navigate(['/']));
+          .then((isLogged) => {
+            !!isLogged || router.navigate(['']);
+          });
       },
     ],
   },

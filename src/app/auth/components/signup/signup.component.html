@@ -1,8 +1,5 @@
 <div class="container">
     <div class="register-modal">
-        <!-- <div class="close">
-            <div class="close-icon" [routerLink]="['/login']"></div>
-        </div> -->
         <form class="example-form form" [formGroup]="formGroup" (ngSubmit)="onSubmit()">
             <h2>SIGNUP</h2>
             <mat-error>{{errorMessage$$ | async}}</mat-error>

@@ -1,8 +1,5 @@
 <div class="container">
     <div class="register-modal">
-        <!-- <div class="close">
-            <div class="close-icon" routerLink='/home'></div>
-        </div> -->
         <form class="example-form form" [formGroup]="formGroup" (ngSubmit)="onSubmit()">
             <h2>LOGIN</h2>
             <mat-error>{{errorMessage$$ | async}}</mat-error>
@@ -23,7 +20,7 @@
                     </mat-error>
                 </mat-form-field>
             </div>
-            <button mat-button class=" form__button" [disabled]="formGroup.invalid">LOGIN</button>
+            <button mat-button type="submit" class=" form__button" [disabled]="formGroup.invalid">LOGIN</button>
             <button mat-button class="form__button login-btn" routerLink='/signup'>Register an
                 account</button>
         </form>

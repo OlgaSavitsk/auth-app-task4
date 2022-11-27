@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, switchMap, take, tap } from 'rxjs';
+import { BehaviorSubject, Observable, switchMap, tap } from 'rxjs';
 
 import { Path, STORAGE_NAME } from 'src/app/app.constants';
 import { LocalStorageService, StorageUser } from '@core/services/localstorage.service';
@@ -87,7 +87,7 @@ export class AuthService {
 
   async logout() {
     this.storageService.removeStorage(STORAGE_NAME);
-    await this.getToken();
     this.router.navigate([Path.signupPage]);
+    await this.getToken();
   }
 }
