@@ -5,6 +5,7 @@
         </div> -->
         <form class="example-form form" [formGroup]="formGroup" (ngSubmit)="onSubmit()">
             <h2>SIGNUP</h2>
+            <mat-error>{{errorMessage$$ | async}}</mat-error>
             <div class="form__container">
                 <mat-form-field class="example-full-width" appearance="fill">
                     <mat-label>Name</mat-label>

@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { Subject, takeUntil } from 'rxjs';
+import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
 
 import { ValidationService } from '@core/services/validation.service';
 import { MaterialModule } from '@shared/modules/material/material.module';
@@ -19,6 +19,8 @@ export class SignupComponent implements OnInit, OnDestroy {
   formGroup!: FormGroup;
 
   private ngUnsubscribe = new Subject();
+  private errorMessage$ = new BehaviorSubject<string>('');
+  errorMessage$$ = this.errorMessage$.pipe();
 
   constructor(private authService: AuthService, public validationService: ValidationService) {}
 
@@ -34,9 +36,14 @@ export class SignupComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(): void {
-    this.authService.signUp(this.formGroup.value).subscribe(() => {
-      this.formGroup.reset();
-    });
+    this.authService.signUp(this.formGroup.value).subscribe(
+      () => {
+        this.formGroup.reset();
+      },
+      (err) => {
+        this.errorMessage$.next(err.error.message);
+      }
+    );
   }
 
   ngOnDestroy(): void {
