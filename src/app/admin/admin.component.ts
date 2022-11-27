@@ -26,6 +26,7 @@ export interface Task {
 export class AdminComponent implements OnInit {
   displayedColumns = displayedColumns;
   userState: UserInfo[] = [];
+  currentName!: string;
 
   constructor(
     public authService: AuthService,
@@ -35,53 +36,48 @@ export class AdminComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.authService.currentUserName$$.subscribe((name) => (this.currentName = name));
     this.getAllUsers();
-    this.userControlService.isDeleted$.subscribe((val: boolean) => {
-      val && this.deleteUser();
-    });
-    this.userControlService.blockStatus$.subscribe((val) => {
-      val && this.blockUser(val);
-    });
+    this.blockUser();
+    this.deleteUser();
   }
 
-  blockUser(val: string) {
-    this.selectControlService.checkedUsers.forEach((user) => {
-      if (user.status == val) return;
-      if (user.completed) {
-        user.status = val;
-        this.userService.updateUserStatus(val, user.id).subscribe();
-        this.logout();
-      }
+  blockUser() {
+    this.userControlService.blockStatus$.subscribe((val) => {
+      val &&
+        this.selectControlService.checkedUsers.forEach((user) => {
+          if (user.status == val) return;
+          if (user.completed) {
+            user.status = val;
+            this.userService.updateUserStatus(val, user.id).subscribe();
+            this.logout();
+          }
+        });
     });
   }
 
   deleteUser(): void {
-    this.selectControlService.checkedUsers.forEach(async (user) => {
-      this.userService.deleteUser(user.id).subscribe();
-      this.userControlService.deleteUser(false);
-      this.setUserState(user.id);
-      this.authService.currentUserName$$.subscribe(async (name) => {
-        if (user.name !== name) return;
-      });
-      this.authService.logout();
+    this.userControlService.isDeleted$.subscribe((val: boolean) => {
+      val &&
+        this.selectControlService.checkedUsers.every(async (user) => {
+          this.userService.deleteUser(user.id).subscribe();
+          this.setUserState(user.id);
+          this.userControlService.deleteUser(false);
+          this.logout();
+        });
     });
+  }
+
+  logout(): void {
+    if (this.currentName === this.selectControlService.currentUser) {
+      this.authService.logout();
+    }
+    return;
   }
 
   setUserState(id: string) {
     this.userState = this.selectControlService.userDetails.users.filter((user) => user.id !== id);
     this.selectControlService.userDetails.users = this.userState;
-  }
-
-  logout(): void {
-    this.selectControlService.userDetails.users.forEach(async (user) => {
-      await this.authService.currentUserName$$.subscribe((name) => {
-        console.log(name);
-        if (user.name === name) {
-          this.authService.logout();
-        }
-        return;
-      });
-    });
   }
 
   public async getAllUsers(): Promise<void> {

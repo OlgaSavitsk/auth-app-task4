@@ -14,12 +14,16 @@ export class SelectControlService {
   allComplete: boolean = false;
   checkedUsers: UserInfo[] = [];
   userState$!: Observable<UserInfo[]>;
+  currentUser: any;
 
   constructor(public authService: AuthService) {}
 
-  updateAllComplete(): void {
+  updateAllComplete(name: any): void {
     this.allComplete =
       this.userDetails.users != null && this.userDetails.users.every((t) => t.completed);
+    this.currentUser = name;
+    console.log('1', this.currentUser);
+    return this.currentUser;
   }
 
   someComplete(): boolean {

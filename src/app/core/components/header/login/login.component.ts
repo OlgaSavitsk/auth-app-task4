@@ -29,7 +29,7 @@ export default class LoginComponent {
     this.userControlService.blockUser(BlockStatus.active);
   }
 
-  onDelete(val: boolean): void {
-    this.userControlService.deleteUser(val);
+  onDelete(): void {
+    this.userControlService.deleteUser(!this.isDeleted);
   }
 }

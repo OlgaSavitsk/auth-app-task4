@@ -15,7 +15,7 @@ export class UserControlService {
     this.blockStatus$$.next(value);
   }
 
-  deleteUser(value: boolean) {
-    this.isDeleted$$.next(value);
+  deleteUser(val: boolean) {
+    this.isDeleted$$.next(val);
   }
 }
