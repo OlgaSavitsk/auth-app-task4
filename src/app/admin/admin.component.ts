@@ -32,13 +32,10 @@ export class AdminComponent implements OnInit {
     private userControlService: UserControlService,
     private userService: UserApiService,
     public selectControlService: SelectControlService
-  ) {
-    //this.getAllUsers();
-  }
+  ) {}
 
   ngOnInit(): void {
     this.getAllUsers();
-    this.authService.getToken();
     this.blockUser();
     this.deleteUser();
   }

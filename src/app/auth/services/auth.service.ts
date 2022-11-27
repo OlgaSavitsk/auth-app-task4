@@ -59,7 +59,6 @@ export class AuthService {
         tap(async (users: UserInfo[] | undefined) => {
           if (users) {
             const { name } = users.find((user: { login: string }) => user.login === login)!;
-            //this.currentUserName$.next(name);
             this.setStorage(this.accestoken, name);
             this.router.navigate([Path.adminPage]);
           }
@@ -72,10 +71,10 @@ export class AuthService {
       STORAGE_NAME
     )) as StorageUser;
     this.isLoggedIn$.next(!!token);
-    name ? name : 'Your name';
-    this.currentUserName$.next(name);
+    let currentName = name || 'Your name';
+    this.currentUserName$.next(currentName);
     this.accestoken = token;
-    //return token;
+    return token;
   }
 
   setStorage(token: string, name: string): void {
@@ -86,9 +85,9 @@ export class AuthService {
     return this.http.get<UserInfo[]>(`${environment.BASE_URL}/user`);
   }
 
-  logout(): void {
+  async logout() {
     this.storageService.removeStorage(STORAGE_NAME);
-    this.getToken();
+    await this.getToken();
     this.router.navigate([Path.signupPage]);
   }
 }
