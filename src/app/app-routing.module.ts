@@ -1,3 +1,4 @@
+import { AdminComponent } from '@admin/admin.component';
 import { inject } from '@angular/core';
 import { Route, Router, Routes, UrlSegment } from '@angular/router';
 import { AuthService } from '@auth/services/auth.service';
@@ -13,7 +14,7 @@ export const appRoutes: Routes = [
   },
   {
     path: Path.adminPage,
-    loadComponent: () => import('./admin/admin.component').then((m) => m.AdminComponent),
+    component: AdminComponent,
     canActivate: [
       (route: Route, segments: UrlSegment[]) => {
         const router = inject(Router);

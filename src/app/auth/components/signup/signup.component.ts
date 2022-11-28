@@ -6,7 +6,7 @@ import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
 
 import { ValidationService } from '@core/services/validation.service';
 import { MaterialModule } from '@shared/modules/material/material.module';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '@auth/services/auth.service';
 
 @Component({
   selector: 'app-signup',
@@ -45,6 +45,7 @@ export class SignupComponent implements OnInit, OnDestroy {
       },
       (err) => {
         this.errorMessage$.next(err.error.message);
+        this.isSpinner = false;
       }
     );
   }

@@ -7,14 +7,7 @@ import { UserInfo } from '@shared/models/user.interfaces';
 import { UserControlService } from '../core/services/user-control.service';
 import { UserApiService } from '@core/services/user-api.service';
 import { SelectControlService } from './services/select-control.service';
-import { displayedColumns } from '../app.constants';
-
-export interface Task {
-  name: string;
-  completed: boolean;
-  color: string;
-  subtasks?: Task[];
-}
+import { BlockStatus, displayedColumns } from '../app.constants';
 
 @Component({
   selector: 'app-admin',
@@ -49,7 +42,7 @@ export class AdminComponent implements OnInit {
         if (user.completed) {
           user.status = val;
           this.userService.updateUserStatus(val, user.id).subscribe();
-          this.logout();
+          val === BlockStatus.blocked && this.logout();
         }
       });
     });
@@ -57,21 +50,21 @@ export class AdminComponent implements OnInit {
 
   deleteUser(): void {
     this.userControlService.isDeleted$.subscribe((val: boolean) => {
-      if (val) {
-        this.selectControlService.checkedUsers.every(async (user) => {
+      val &&
+        this.selectControlService.checkedUsers.forEach((user) => {
           this.userService.deleteUser(user.id).subscribe();
-          this.setUserState(user.id);
           this.userControlService.deleteUser(false);
+          this.setUserState(user.id);
           this.logout();
         });
-      }
     });
   }
 
   logout(): void {
     if (
-      this.selectControlService.completedUser &&
-      this.currentName === this.selectControlService.currentUser
+      (this.selectControlService.completedUser &&
+        this.currentName === this.selectControlService.currentUser) ||
+      !this.userState.length
     ) {
       this.authService.logout();
     }
@@ -81,11 +74,13 @@ export class AdminComponent implements OnInit {
   setUserState(id: string) {
     this.userState = this.selectControlService.userDetails.users.filter((user) => user.id !== id);
     this.selectControlService.userDetails.users = this.userState;
+    return this.userState;
   }
 
   public async getAllUsers(): Promise<void> {
     await this.authService.getUsers().subscribe((users: UserInfo[]) => {
       this.selectControlService.userDetails.users = users;
+      this.userState = users;
       this.selectControlService.userDetails.users.forEach((user) => (user.completed = false));
     });
   }
