@@ -1,0 +1,37 @@
+<div class="container">
+    <div class="register-modal">
+        <form class="example-form form" [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+            <h2>SIGNUP</h2>
+            <mat-error>{{errorMessage$$ | async}}</mat-error>
+            <div class="form__container">
+                <mat-form-field class="example-full-width" appearance="fill">
+                    <mat-label>Name</mat-label>
+                    <input matInput class="form__input" type="text" placeholder="Enter your name" formControlName="name"
+                        autocomplete="new-email">
+                    <mat-error *ngIf=" formGroup.get('name')!.invalid">{{validationService.errorMessage}}
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="example-full-width" appearance="fill">
+                    <mat-label>Email</mat-label>
+                    <input matInput class="form__input" type="email" placeholder="Enter your email"
+                        formControlName="login" autocomplete="new-email">
+                    <mat-error *ngIf=" formGroup.get('login')!.invalid">{{validationService.errorMessage}}
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="example-full-width" appearance="fill">
+                    <mat-label>Password</mat-label>
+                    <input matInput class="form__input" type="password" placeholder="Enter password"
+                        formControlName="password" autocomplete="off">
+                    <mat-error *ngIf=" formGroup.get('password')!.invalid">{{validationService.errorMessage}}
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <button mat-button class="form__button" [disabled]="formGroup.invalid">Continue</button>
+            <mat-spinner *ngIf="isSpinner"></mat-spinner>
+            <button mat-button class="form__button login-btn" routerLink='/login'>Already have an account?
+                Login</button>
+        </form>
+    </div>
+</div>
