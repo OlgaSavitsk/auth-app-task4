@@ -17,6 +17,7 @@ import { AuthService } from '../../services/auth.service';
 })
 export class SignupComponent implements OnInit, OnDestroy {
   formGroup!: FormGroup;
+  isSpinner: boolean = false;
 
   private ngUnsubscribe = new Subject();
   private errorMessage$ = new BehaviorSubject<string>('');
@@ -36,9 +37,11 @@ export class SignupComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(): void {
+    this.isSpinner = !this.isSpinner;
     this.authService.signUp(this.formGroup.value).subscribe(
       () => {
         this.formGroup.reset();
+        this.isSpinner = false;
       },
       (err) => {
         this.errorMessage$.next(err.error.message);

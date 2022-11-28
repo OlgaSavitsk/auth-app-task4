@@ -29,6 +29,7 @@
                 </mat-form-field>
             </div>
             <button mat-button class="form__button" [disabled]="formGroup.invalid">Continue</button>
+            <mat-spinner *ngIf="isSpinner"></mat-spinner>
             <button mat-button class="form__button login-btn" routerLink='/login'>Already have an account?
                 Login</button>
         </form>

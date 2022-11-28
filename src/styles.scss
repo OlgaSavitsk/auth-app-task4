@@ -54,6 +54,12 @@ body {
   }
 }
 
+.mat-mdc-progress-spinner {
+  width: 50px !important;
+  height: 50px !important;
+  margin-top: 10px;
+}
+
 @media (max-width: 370px) {
   .mdc-data-table__table {
     max-width: 300px !important;
